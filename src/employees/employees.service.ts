@@ -1,5 +1,5 @@
 import { Model } from 'mongoose';
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Employees, EmployeesDocument } from './schemas/employees.schemas'
 
@@ -14,5 +14,17 @@ export class EmployeesService {
   async create(data: Employees): Promise<Employees> {
     const createEmployee = new this.employeesModel(data)
     return createEmployee.save();
+  }
+
+  async update(id: string, data: Employees): Promise<any> {
+        const employee = await this.employeesModel.findOne({_id: id})
+        if(!employee?.name){
+          throw new NotFoundException()
+        }
+
+       const dataUpdate = await this.employeesModel.updateOne({_id: id}, data)
+       if(dataUpdate.matchedCount){
+        return data
+       }
   }
 }

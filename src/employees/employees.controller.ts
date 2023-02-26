@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body } from '@nestjs/common';
+import { Controller, Get, Post, Body, Put, Param, HttpException, HttpStatus } from '@nestjs/common';
 import { EmployeesService } from './employees.service';
 import { Employees } from './schemas/employees.schemas'
 
@@ -12,24 +12,16 @@ export class EmployeesController {
   }
 
   @Post()
-  async postEmployee(@Body() employee: Employees ): Promise<Employees> {
-    // const data = {
-    //   "name": "ทดสอบ01",
-    //   "salary": 60000,
-    //   "address": "กรุงเทพมหานคร",
-    //   "general": {
-    //     "weight": 60,
-    //     "height": 170,
-    //     "gender": "ชาย"
-    //   },
-    //   "social": [
-    //     "facebook",
-    //     "line",
-    //     "twitter"
-    //   ],
-    //   "department": "ฝ่ายการตลาด"
-    // }
-    
+  async createEmployee(@Body() employee: Employees ): Promise<Employees> {
     return await this.EmployeesService.create(employee);
+  }
+
+  @Put(":id")
+  async updateEmployee(@Param() params: {id: string}, @Body() employee: Employees ): Promise<Employees> {
+    try {
+      return await this.EmployeesService.update(params?.id, employee);
+    }catch(err){
+      throw new HttpException(err.message, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 }

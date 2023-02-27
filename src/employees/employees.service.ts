@@ -1,8 +1,5 @@
 import { Model } from 'mongoose';
-import {
-  Injectable,
-  NotFoundException,
-} from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Employees, EmployeesDocument } from './schemas/employees.schemas';
 
@@ -22,6 +19,13 @@ export class EmployeesService {
     if (!employee?.name) throw new NotFoundException();
 
     return this.employeesModel.findOne({ _id: id }).exec();
+  }
+
+  async findByName(name: string): Promise<Employees[]> {
+    const employee = await this.employeesModel.findOne({ name });
+    if (!employee?.name) throw new NotFoundException();
+
+    return this.employeesModel.find({ name }).exec();
   }
 
   async create(data: Employees): Promise<Employees> {

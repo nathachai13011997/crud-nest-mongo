@@ -6,7 +6,7 @@ import * as moment from 'moment';
 export class ErrorService {
   errorResponse(error: any): any {
     if (process.env.ERROR_LOG === 'true') {
-      console.log('process.env.ERROR_LOG: ', process.env.ERROR_LOG);
+      // console.log('process.env.ERROR_LOG: ', process.env.ERROR_LOG);
       const logFileName = './logs/' + moment().format('YYYY-MM-DD') + '.log';
       const logText = `${moment().format('YYYY-MM-DD HH:mm:ss.SSS')} | ${error?.status || HttpStatus.INTERNAL_SERVER_ERROR} | ${
         error?.message || ''

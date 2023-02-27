@@ -23,7 +23,7 @@ export class EmployeesController {
     try {
       return await this.EmployeesService.findAll();
     } catch (err) {
-      throw new HttpException(err.message, err.status || HttpStatus.INTERNAL_SERVER_ERROR);
+      this.ErrorService.errorResponse(err)
     }
   }
 
@@ -41,7 +41,7 @@ export class EmployeesController {
     try {
       return await this.EmployeesService.create(employee);
     } catch (err) {
-      throw new HttpException(err.message, err.status || HttpStatus.INTERNAL_SERVER_ERROR);
+      this.ErrorService.errorResponse(err)
     }
   }
 
@@ -53,7 +53,7 @@ export class EmployeesController {
     try {
       return await this.EmployeesService.update(params?.id, employee);
     } catch (err) {
-      throw new HttpException(err.message, err.status || HttpStatus.INTERNAL_SERVER_ERROR);
+      this.ErrorService.errorResponse(err)
     }
   }
 
@@ -62,7 +62,7 @@ export class EmployeesController {
     try {
       return await this.EmployeesService.delete(params?.id);
     } catch (err) {
-      throw new HttpException(err.message, err.status || HttpStatus.INTERNAL_SERVER_ERROR);
+      this.ErrorService.errorResponse(err)
     }
   }
 }

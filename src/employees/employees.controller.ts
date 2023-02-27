@@ -12,10 +12,11 @@ import {
 import { EmployeesService } from './employees.service';
 import { Employees } from './schemas/employees.schemas';
 import { EmployeeInput } from './interfaces/employee.interface';
+import { ErrorService } from '../error.service';
 
 @Controller('employees')
 export class EmployeesController {
-  constructor(private readonly EmployeesService: EmployeesService) {}
+  constructor(private readonly EmployeesService: EmployeesService, private readonly ErrorService: ErrorService) {}
 
   @Get()
   async getEmployeesAll(): Promise<Employees[]> {
@@ -31,7 +32,7 @@ export class EmployeesController {
     try {
       return await this.EmployeesService.findById(params?.id);
     } catch (err) {
-      throw new HttpException(err.message, err.status || HttpStatus.INTERNAL_SERVER_ERROR);
+      this.ErrorService.errorResponse(err)
     }
   }
 
